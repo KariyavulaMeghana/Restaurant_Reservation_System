@@ -47,7 +47,6 @@ namespace Restaurant_Reservation_System.Controllers
         }
 
         // PUT: api/Restaurants/5
-        //[Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRestaurant(int id, RestaurantDTO restaurantDTO)
         {
@@ -85,15 +84,7 @@ namespace Restaurant_Reservation_System.Controllers
             }
             return Ok(restaurant);
         }
-        // GET: api/Restaurants/category/{category}
-        //[HttpGet("category/{category}")]
-        //public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurantsByCategory(string category)
-        //{
-        //    var restaurants = await _context.GetRestaurantByCategory(category);
-        //    return Ok(restaurants);
-        //}
-
-
+        
         // GET: api/Restaurants/location/{location}
         [HttpGet("location/{location}")]
         public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurantsByLocation(string location)

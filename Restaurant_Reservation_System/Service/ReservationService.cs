@@ -14,15 +14,12 @@ namespace Restaurant_Reservation_System.Service
         {
             _context = context;
         }
-
-
         public async Task<string> BookReservations(ReservationDTO reservationDTO)
         {
             if (reservationDTO == null)
             {
-                throw new ArgumentNullException(nameof(reservationDTO), "Reservation data cannot be null");
+                throw new CustomException("Reservation data cannot be null");
             }
-
             try
             {
                 var reservationEntity = new Reservation
@@ -34,7 +31,6 @@ namespace Restaurant_Reservation_System.Service
                     Status = reservationDTO.Status
                 };
 
-                // Add the reservation to the database
                 _context.Reservations.Add(reservationEntity);
                 await _context.SaveChangesAsync();
 
@@ -42,7 +38,6 @@ namespace Restaurant_Reservation_System.Service
             }
             catch (DbUpdateException ex)
             {
-                // Handle database-specific exceptions
                 return $"Database error: {ex.Message}";
             }
             catch (Exception ex)

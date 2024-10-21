@@ -14,6 +14,7 @@ namespace Restaurant_Reservation_System.Service
         {
             _context = context;
         }
+
         public async Task<string> DeleteUser(int id)
         {
             var userFound = await _context.Users.FindAsync(id);
@@ -25,33 +26,51 @@ namespace Restaurant_Reservation_System.Service
             }
             return "User Id Not found";
         }
+
         public async Task<List<UserDTO>> GetUsers()
         {
             List<User> users = await _context.Users.ToListAsync();
             List<UserDTO> userDTOs = users.Select(user => user.ToDTO()).ToList();
             return userDTOs;
         }
-        public async Task<string> Login(string username, string password)
+       
+        public async Task<LoginResponse> Login(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                return "Username or password cannot be empty";
+                return new LoginResponse
+                {
+                    Message = "Username or password cannot be empty",
+                    Role = null
+                };
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
 
             if (user == null)
             {
-                return "User not found";
+                return new LoginResponse
+                {
+                    Message = "User not found",
+                    Role = null
+                };
             }
 
-            if (user.Username == username && user.Password == password)
+            if (user.Password == password)
             {
-                return "Login successful";
+                return new LoginResponse
+                {
+                    Message = "Login successful",
+                    Role = user.Role // Return the user's role
+                };
             }
             else
             {
-                return "Invalid username or password";
+                return new LoginResponse
+                {
+                    Message = "Invalid username or password",
+                    Role = null
+                };
             }
         }
 
@@ -88,6 +107,17 @@ namespace Restaurant_Reservation_System.Service
             }
             return "User not found";
         }
+
+        public async Task<User> GetUserById(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return null; 
+            }
+
+            return user; 
+        }
     }
 }
-

@@ -24,5 +24,5 @@ namespace Restaurant_Reservation_System.Models
         [Required(ErrorMessage = "Category is required.")]
         [StringLength(50, ErrorMessage = "Category cannot be longer than 50 characters.")]
         public string? Category { get; set; }
-     }
+    }
 }

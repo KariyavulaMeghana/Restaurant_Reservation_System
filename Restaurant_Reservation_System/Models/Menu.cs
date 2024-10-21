@@ -13,6 +13,6 @@ namespace Restaurant_Reservation_System.Models
         [Required(ErrorMessage = "Restaurant ID is required.")]
         [ForeignKey(nameof(Restaurant))]
         public int RestaurantId { get; set; }
-        public virtual ICollection<MenuItem> MenuItems { get; set; } 
+        public virtual ICollection<MenuItem> MenuItems { get; set; }
     }
 }

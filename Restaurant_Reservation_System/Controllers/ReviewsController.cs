@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant_Reservation_System.DTO;
 using Restaurant_Reservation_System.IService;
+using Restaurant_Reservation_System.Models;
 
 namespace Restaurant_Reservation_System.Controllers
 {
@@ -33,7 +34,7 @@ namespace Restaurant_Reservation_System.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostReview([FromBody] ReviewDTO reviewCreateDto)
+        public async Task<IActionResult> PostReview(ReviewDTO reviewCreateDto)
         {
             if (!ModelState.IsValid)
             {
@@ -43,15 +44,15 @@ namespace Restaurant_Reservation_System.Controllers
             var result = await _reviewService.AddReview(reviewCreateDto);
             if (result == "Review added successfully")
             {
-                return Ok(new { Message = result });
+                return Ok(result);
             }
-            return BadRequest(new { Message = result });
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ReviewDTO>> GetReviewById(int id)
         {
-            try
+            if(id != 0)
             {
                 var review = await _reviewService.GetReviewById(id);
                 if (review == null)
@@ -60,9 +61,9 @@ namespace Restaurant_Reservation_System.Controllers
                 }
                 return Ok(review);
             }
-            catch (Exception ex)
+           else
             {
-                return StatusCode(500, new { Message = $"Internal server error: {ex.Message}" });
+                throw new CustomException("Id cannot be zero");
             }
         }
 
@@ -74,13 +75,13 @@ namespace Restaurant_Reservation_System.Controllers
                 return BadRequest(ModelState);
             }
 
-            reviewDto.ReviewID = id; // Set the ReviewID from the URL parameter
+            reviewDto.ReviewID = id;
             var result = await _reviewService.UpdateReview(reviewDto);
             if (result == "Review updated successfully")
             {
-                return Ok(new { Message = result });
+                return Ok(result);
             }
-            return BadRequest(new { Message = result });
+            return BadRequest();
         }
 
         [HttpDelete("{id}")]
@@ -91,7 +92,7 @@ namespace Restaurant_Reservation_System.Controllers
                 var result = await _reviewService.DeleteReview(id);
                 if (result == "Review deleted successfully")
                 {
-                    return Ok(new { Message = result });
+                    return Ok(result);
                 }
                 return BadRequest(new { Message = result });
             }
@@ -122,11 +123,11 @@ namespace Restaurant_Reservation_System.Controllers
             {
                 var reviews = await _reviewService.GetReviewsByUserId(userId);
                 return Ok(reviews);
-            }
+			}
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = $"Internal server error: {ex.Message}" });
-            }
-        }
+				return StatusCode(500, new { Message = $"Internal server error: {ex.Message}" });
+			}
+		}
     }
 }

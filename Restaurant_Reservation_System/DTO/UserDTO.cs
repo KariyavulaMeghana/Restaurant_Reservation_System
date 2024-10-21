@@ -7,7 +7,7 @@ namespace Restaurant_Reservation_System.DTO
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserId {  get; set; }    
+        public int UserId { get; set; }
         public string? FirstName { get; set; }
         [Required]
         [StringLength(50, ErrorMessage = "Last Name cannot exceed 50 characters.")]

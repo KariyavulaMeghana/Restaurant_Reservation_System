@@ -9,7 +9,7 @@ namespace Restaurant_Reservation_System.Mappings
         {
             return new UserDTO
             {
-                UserId=user.UserId,
+                UserId = user.UserId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Address = user.Address,
@@ -21,7 +21,7 @@ namespace Restaurant_Reservation_System.Mappings
         {
             return new User
             {
-                UserId=userDTO.UserId,
+                UserId = userDTO.UserId,
                 FirstName = userDTO.FirstName,
                 LastName = userDTO.LastName,
                 Address = userDTO.Address,

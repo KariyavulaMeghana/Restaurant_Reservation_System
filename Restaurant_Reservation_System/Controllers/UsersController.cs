@@ -25,22 +25,35 @@ namespace Restaurant_Reservation_System.Controllers
         }
 
         // POST: api/User/Login
-        [HttpPost("Login")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginModel loginModel)
+        //[HttpPost("Login")]
+        //public async Task<ActionResult<string>> Login([FromBody] LoginModel loginModel)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest("Invalid login attempt.");
+        //    }
+
+        //    var result = await _userServices.Login(loginModel.Username, loginModel.Password);
+
+        //    if (result == "Login successful")
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            if (!ModelState.IsValid)
+            var result = await _userServices.Login(model.Username, model.Password);
+
+            if (result.Message == "Login successful")
             {
-                return BadRequest("Invalid login attempt.");
+                return Ok(result); // Return the LoginResponse object
             }
 
-            var result = await _userServices.Login(loginModel.Username, loginModel.Password);
-
-            if (result == "Login successful")
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Unauthorized(new { Message = result.Message });
         }
+
 
         // POST: api/User/Register
         [HttpPost("Register")]
@@ -61,7 +74,7 @@ namespace Restaurant_Reservation_System.Controllers
         {
             var result = await _userServices.UpdateUser(id, user);
 
-            if (result == "User updated successfuly")
+            if (result == "User updated successfully")
             {
                 return Ok(result);
             }
@@ -80,6 +93,19 @@ namespace Restaurant_Reservation_System.Controllers
             }
             return NotFound(result);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUserById(int id)
+        {
+            var user = await _userServices.GetUserById(id);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(user);
+        }
+
     }
 }
-

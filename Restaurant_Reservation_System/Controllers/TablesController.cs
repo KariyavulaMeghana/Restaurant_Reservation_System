@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Restaurant_Reservation_System.DTO;
 using Restaurant_Reservation_System.IServices;
+using Restaurant_Reservation_System.Models;
 
 namespace Restaurant_Reservation_System.Controllers
 {
@@ -50,8 +51,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while adding the table.");
                 return StatusCode(500, $"An error occurred while adding the table. {ex.Message}");
             }
         }
@@ -75,8 +74,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while updating the table.");
                 return StatusCode(500, $"An error occurred while updating the table. {ex.Message}");
             }
         }
@@ -96,8 +93,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while deleting the table.");
                 return StatusCode(500, $"An error occurred while deleting the table. {ex.Message}");
             }
         }
@@ -113,7 +108,11 @@ namespace Restaurant_Reservation_System.Controllers
         public async Task<IActionResult> CheckTableAvailability()
         {
             var availableTables = await _tableService.CheckTableAvailabilityAsync();
-            return Ok(availableTables);
+			if (availableTables == null || !availableTables.Any())
+			{
+				throw new CustomException("No tables are available at the moment.");
+			}
+			return Ok(availableTables);
         }
 
     }

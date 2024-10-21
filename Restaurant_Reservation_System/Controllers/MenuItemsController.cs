@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Restaurant_Reservation_System.DTO;
 using Restaurant_Reservation_System.IServices;
+using Restaurant_Reservation_System.Models;
 
 namespace Restaurant_Reservation_System.Controllers
 {
@@ -34,7 +36,7 @@ namespace Restaurant_Reservation_System.Controllers
         {
             if (menuItemDto == null)
             {
-                return BadRequest("Menu item data is null.");
+                throw new CustomException("Menu item data is null.");
             }
 
             var result = await _menuItemService.UpdateMenuItemAsync(id, menuItemDto);

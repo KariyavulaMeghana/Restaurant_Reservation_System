@@ -14,7 +14,6 @@ namespace Restaurant_Reservation_System.Service
         {
             _context = context;
         }
-
         public async Task<TableDtoDisplay> AddTableAsync(TableDto table)
         {
             _context.Tables.Add(new Table

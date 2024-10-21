@@ -3,11 +3,10 @@
 namespace Restaurant_Reservation_System.DTO
 {
     public class ReviewDTO
-    {
-        
+    {   
         [Key]
         [Required]
-        public int ReviewID { get; set; } // Add this property for updating
+        public int ReviewID { get; set; } 
         [Required]
         public int UserID { get; set; }
         [Required]
