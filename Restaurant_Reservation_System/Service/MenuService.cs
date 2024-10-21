@@ -33,19 +33,34 @@ namespace Restaurant_Reservation_System.Service
         }
         public async Task<MenuDTO> UpdateMenuAsync(int id, MenuDTO menuDto)
         {
-            var menu = await _context.Menu.FindAsync(id);
-            if (menu == null)
-                return null;
+			//var menu = await _context.Menu.FindAsync(id);
+			//if (menu == null)
+			//    return null;
 
-            menu.RestaurantId = menuDto.RestaurantId;
-            await _context.SaveChangesAsync();
+			//menu.RestaurantId = menuDto.RestaurantId;
+			//await _context.SaveChangesAsync();
 
-            return new MenuDTO
-            {
-                MenuId = menu.MenuId,
-                RestaurantId = menu.RestaurantId
-            };
-        }
+			//return new MenuDTO
+			//{
+			//    MenuId = menu.MenuId,
+			//    RestaurantId = menu.RestaurantId
+			//};
+
+			var menu = await _context.Menu.FindAsync(id);
+			if (menu == null)
+			{
+				throw new CustomException($"Menu with ID {id} not found.");
+			}
+
+			menu.RestaurantId = menuDto.RestaurantId;
+			await _context.SaveChangesAsync();
+
+			return new MenuDTO
+			{
+				MenuId = menu.MenuId,
+				RestaurantId = menu.RestaurantId
+			};
+		}
         public async Task<bool> DeleteMenuAsync(int id)
         {
             var menu = await _context.Menu.FindAsync(id);

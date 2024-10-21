@@ -15,7 +15,7 @@ namespace Restaurant_Reservation_System.Service
             _context = context;
         }
 
-        public async Task<OrderDtoDisplay> PlaceOrderAsync(OrderDto order)
+        public async Task<OrdereDtoDisplay> PlaceOrderAsync(OrderDto order)
         {
             _context.Orders.Add(new Order
             {
@@ -28,7 +28,7 @@ namespace Restaurant_Reservation_System.Service
             });
             await _context.SaveChangesAsync();
 
-            return new OrderDtoDisplay
+            return new OrdereDtoDisplay
             {
                 OrderId = order.OrderId,
                 CustomerName = order.CustomerName,
@@ -38,7 +38,7 @@ namespace Restaurant_Reservation_System.Service
             };
         }
 
-        public async Task<OrderDtoDisplay> UpdateOrderAsync(int id, OrderDto order)
+        public async Task<OrdereDtoDisplay> UpdateOrderAsync(int id, OrderDto order)
         {
             var existingOrder = await _context.Orders.FindAsync(id);
             if (existingOrder == null)
@@ -53,7 +53,7 @@ namespace Restaurant_Reservation_System.Service
 
             await _context.SaveChangesAsync();
 
-            return new OrderDtoDisplay
+            return new OrdereDtoDisplay
             {
                 OrderId = existingOrder.OrderId,
                 CustomerName = existingOrder.CustomerName,
@@ -74,10 +74,10 @@ namespace Restaurant_Reservation_System.Service
             return true;
         }
 
-        public async Task<IEnumerable<OrderDtoDisplay>> GetAllOrdersAsync()
+        public async Task<IEnumerable<OrdereDtoDisplay>> GetAllOrdersAsync()
         {
             return await _context.Orders
-                .Select(order => new OrderDtoDisplay
+                .Select(order => new OrdereDtoDisplay
                 {
                     OrderId = order.OrderId,
                     CustomerName = order.CustomerName,
@@ -87,13 +87,13 @@ namespace Restaurant_Reservation_System.Service
                 }).ToListAsync();
         }
 
-        public async Task<OrderDtoDisplay> GetOrderByIdAsync(int id)
+        public async Task<OrdereDtoDisplay> GetOrderByIdAsync(int id)
         {
             var order = await _context.Orders.FindAsync(id);
             if (order == null)
                 return null;
 
-            return new OrderDtoDisplay
+            return new OrdereDtoDisplay
             {
                 OrderId = order.OrderId,
                 CustomerName = order.CustomerName,
@@ -103,11 +103,11 @@ namespace Restaurant_Reservation_System.Service
             };
         }
 
-        public async Task<IEnumerable<OrderDtoDisplay>> GetOrdersByUserIdAsync(int userId)
+        public async Task<IEnumerable<OrdereDtoDisplay>> GetOrdersByUserIdAsync(int userId)
         {
             return await _context.Orders
                 .Where(order => order.UserId == userId)
-                .Select(order => new OrderDtoDisplay
+                .Select(order => new OrdereDtoDisplay
                 {
                     OrderId = order.OrderId,
                     CustomerName = order.CustomerName,
@@ -117,11 +117,11 @@ namespace Restaurant_Reservation_System.Service
                 }).ToListAsync();
         }
 
-        public async Task<IEnumerable<OrderDtoDisplay>> GetOrdersByRestaurantIdAsync(int restaurantId)
+        public async Task<IEnumerable<OrdereDtoDisplay>> GetOrdersByRestaurantIdAsync(int restaurantId)
         {
             return await _context.Orders
                 .Where(order => order.RestaurantId == restaurantId)
-                .Select(order => new OrderDtoDisplay
+                .Select(order => new OrdereDtoDisplay
                 {
                     OrderId = order.OrderId,
                     CustomerName = order.CustomerName,

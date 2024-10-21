@@ -16,8 +16,6 @@ namespace Restaurant_Reservation_System.Service
         }
         public async Task<string> AddNewRestaurant(RestaurantDTO restaurantDTO)
         {
-            try
-            {
                 if (restaurantDTO != null)
                 {
 
@@ -28,15 +26,9 @@ namespace Restaurant_Reservation_System.Service
                 }
                 else
                 {
-                    return "It is empty";
+                    throw new CustomException("It is Empty");
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
-
         public async Task<string> DeleteRestaurant(int restaurantId)
         {
             var restaurant = await _dbContext.Restaurants.FindAsync(restaurantId);

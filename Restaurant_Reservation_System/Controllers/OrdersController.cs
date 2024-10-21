@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Restaurant_Reservation_System.DTO;
 using Restaurant_Reservation_System.IServices;
+using Restaurant_Reservation_System.Models;
 
 namespace Restaurant_Reservation_System.Controllers
 {
@@ -27,8 +28,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while fetching orders.");
                 return StatusCode(500, "An error occurred while fetching the orders.");
             }
         }
@@ -48,8 +47,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while fetching the order.");
                 return StatusCode(500, "An error occurred while fetching the order.");
             }
         }
@@ -66,16 +63,13 @@ namespace Restaurant_Reservation_System.Controllers
             {
                 var placedOrder = await _orderService.PlaceOrderAsync(order);
                 return CreatedAtAction(nameof(GetOrderById), new { id = placedOrder.OrderId },
-                    $"Order placed successfully. Order ID: {placedOrder.OrderId}");
+                    $"Order placed successfully");
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while placing the order.");
                 return StatusCode(500, $"An error occurred while placing the order. {ex.Message}");
             }
         }
-
 
         // PUT: api/orders/5
 
@@ -84,7 +78,7 @@ namespace Restaurant_Reservation_System.Controllers
         {
             if (order == null)
             {
-                return BadRequest("Order data is null.");
+                throw new CustomException("Order data is null.");
             }
             try
             {
@@ -97,8 +91,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while updating the order.");
                 return StatusCode(500, "An error occurred while updating the order.");
             }
         }
@@ -117,8 +109,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while cancelling the order.");
                 return StatusCode(500, "An error occurred while cancelling the order.");
             }
         }
@@ -134,8 +124,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while fetching orders for user.");
                 return StatusCode(500, "An error occurred while fetching orders for the user.");
             }
         }
@@ -151,8 +139,6 @@ namespace Restaurant_Reservation_System.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "An error occurred while fetching orders for restaurant.");
                 return StatusCode(500, "An error occurred while fetching orders for the restaurant.");
             }
         }
